@@ -1,0 +1,13 @@
+{
+  "azure_openai_api_key": "",
+  "azure_openai_endpoint": "https://gangzhang-aischool25-resource.cognitiveservices.azure.com",
+  "azure_openai_api_version": "2024-12-01-preview",
+  "deployment_name": "gpt-4o",
+  "search_service_name": "gz-docs-search",
+  "search_admin_key": "",
+  "embedding_deployment_name": "text-embedding-ada-002",
+  "emoji_index_name": "emoji-emotions-from-vision",
+  "temperature": 1.0,
+  "max_tokens": 4096,
+  "rate_limit_delay": 1.0
+}
