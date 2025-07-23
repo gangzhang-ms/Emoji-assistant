@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📤 Emoji Upload & Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .nav-links {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .nav-links a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background: #0056b3;
+        }
+        
+        .upload-section {
+            padding: 40px;
+        }
+        
+        .upload-form {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .file-label {
+            display: inline-block;
+            padding: 20px 40px;
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8f9fa;
+            margin: 20px 0;
+            width: 100%;
+        }
+        
+        .file-label:hover {
+            border-color: #4CAF50;
+            background: #e8f5e8;
+        }
+        
+        .file-label.dragover {
+            border-color: #4CAF50;
+            background: #e8f5e8;
+        }
+        
+        .upload-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        
+        .upload-button:hover {
+            background: #45a049;
+        }
+        
+        .upload-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .preview {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: left;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .loading .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4CAF50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📤 Emoji Upload & Analysis</h1>
+            <p>Upload emoji images for AI-powered emotion analysis</p>
+        </div>
+        
+        <div class="nav-links">
+            <a href="/search">🔍 Search Interface</a>
+        </div>
+        
+        <div class="upload-section">
+            <form class="upload-form" id="uploadForm" enctype="multipart/form-data">
+                <label for="fileInput" class="file-label" id="fileLabel">
+                    <div>
+                        📁 Click to select image or drag & drop<br>
+                        <small>Supported formats: PNG, JPG, JPEG, GIF, BMP, WEBP (Max 16MB)<br>
+                        All images will be automatically converted to PNG format</small>
+                    </div>
+                </label>
+                <input type="file" id="fileInput" class="file-input" accept="image/*" required>
+                
+                <div class="preview" id="preview"></div>
+                
+                <button type="submit" class="upload-button" id="uploadButton" disabled>
+                    🚀 Upload & Analyze
+                </button>
+            </form>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Analyzing image with AI...</p>
+            </div>
+            
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+            <div class="results" id="results"></div>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileLabel = document.getElementById('fileLabel');
+        const preview = document.getElementById('preview');
+        const uploadButton = document.getElementById('uploadButton');
+        const uploadForm = document.getElementById('uploadForm');
+        const loading = document.getElementById('loading');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const results = document.getElementById('results');
+        
+        // File input change handler
+        fileInput.addEventListener('change', handleFileSelect);
+        
+        // Drag and drop handlers
+        fileLabel.addEventListener('dragover', handleDragOver);
+        fileLabel.addEventListener('drop', handleDrop);
+        fileLabel.addEventListener('dragleave', handleDragLeave);
+        
+        // Form submit handler
+        uploadForm.addEventListener('submit', handleUpload);
+        
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                showPreview(file);
+                uploadButton.disabled = false;
+            }
+        }
+        
+        function handleDragOver(event) {
+            event.preventDefault();
+            fileLabel.classList.add('dragover');
+        }
+        
+        function handleDrop(event) {
+            event.preventDefault();
+            fileLabel.classList.remove('dragover');
+            
+            const file = event.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                fileInput.files = event.dataTransfer.files;
+                showPreview(file);
+                uploadButton.disabled = false;
+            }
+        }
+        
+        function handleDragLeave(event) {
+            event.preventDefault();
+            fileLabel.classList.remove('dragover');
+        }
+        
+        function showPreview(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `
+                    <div>
+                        <p><strong>Selected:</strong> ${file.name} (${(file.size / 1024).toFixed(1)} KB)</p>
+                        <img src="${e.target.result}" alt="Preview">
+                    </div>
+                `;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        async function handleUpload(event) {
+            event.preventDefault();
+            
+            const file = fileInput.files[0];
+            if (!file) {
+                showError('Please select a file first.');
+                return;
+            }
+            
+            // Show loading state
+            loading.style.display = 'block';
+            uploadButton.disabled = true;
+            clearMessages();
+            
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                const response = await fetch('/api/upload-analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showSuccess('Image uploaded and analyzed successfully!');
+                    showResults(data);
+                } else {
+                    showError(data.message || 'Upload failed');
+                }
+                
+            } catch (error) {
+                showError('Network error: ' + error.message);
+            } finally {
+                loading.style.display = 'none';
+                uploadButton.disabled = false;
+            }
+        }
+        
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+            results.style.display = 'none';
+        }
+        
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+        }
+        
+        function clearMessages() {
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            results.style.display = 'none';
+        }
+        
+        function showResults(data) {
+            const analysis = data.analysis || {};
+            const resultsHtml = `
+                <h3>🎯 Analysis Results</h3>
+                <div style="margin: 20px 0;">
+                    <p><strong>📁 Filename:</strong> ${data.filename || 'N/A'}</p>
+                    <p><strong>🏷️ Emoji Name:</strong> ${data.emoji_name || 'N/A'}</p>
+                    <p><strong>💾 Stored in Database:</strong> ${data.stored_in_database ? '✅ Yes' : '❌ No'}</p>
+                </div>
+                
+                <h4>🎯 Usage Scenarios</h4>
+                <div style="margin: 15px 0;">
+                    <ul>
+                        ${Array.isArray(analysis.usage_scenarios) ? analysis.usage_scenarios.map(scenario => `<li>${scenario}</li>`).join('') : '<li>N/A</li>'}
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #e9ecef; border-radius: 5px;">
+                    <p><strong>💡 Tip:</strong> You can now search for similar emojis using the analysis results in the <a href="/search">Search Interface</a>!</p>
+                </div>
+            `;
+            
+            results.innerHTML = resultsHtml;
+            results.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+### Happy Mid-Autumn Festival API
+POST http://localhost:5000/api/analyze-text
+Content-Type: application/json
+
+{
+  "text": "Happy Mid-Autumn Festival! Wishing you a joyful celebration with family and friends.",
+  "top_k": 5
+}
+
+### Happy Dragon Boat Festival API
+POST http://localhost:5000/api/analyze-text
+Content-Type: application/json
+
+{
+  "text": "Happy Dragon Boat Festival! May your celebrations be filled with joy and delicious zongzi.",
+  "top_k": 5
+}
+
+### Local API (when running locally)
+POST http://localhost:5000/api/analyze-text
+Content-Type: application/json
+
+{
+  "text": "Merry Christmas and Happy New Year!",
+  "top_k": 5
+}
+
+### Search by filename API - Method 1: GET with query parameter (exact match)
+GET http://localhost:5000/api/search-by-filename?filename=apple.png
+
+### Search by filename API - Method 1b: GET with query parameter and top_k
+GET http://localhost:5000/api/search-by-filename?filename=apple&top_k=5
+
+### Search by filename API - Method 2: GET with path parameter (contains match)
+GET http://localhost:5000/api/search-by-filename/face
+
+### Search by filename API - Method 2b: GET with path parameter and top_k
+GET http://localhost:5000/api/search-by-filename/heart?top_k=10
+
+### Search by filename API - Method 3: POST with JSON payload (contains match)
+POST http://localhost:5000/api/search-by-filename
+Content-Type: application/json
+
+{
+  "filename": "car",
+  "top_k": 8
+}
+
+### Search by filename API - Partial search examples
+GET http://localhost:5000/api/search-by-filename?filename=ball&top_k=15
+
+### Search by filename API - Starts with search
+GET http://localhost:5000/api/search-by-filename?filename=angry&top_k=5
+
+### Search by name API - Method 1: GET with query parameter
+GET http://localhost:5000/api/search-by-name?name=apple
+
+### Search by name API - Method 2: POST with JSON payload
+POST http://localhost:5000/api/search-by-name
+Content-Type: application/json
+
+{
+  "name": "apple"
+}
+
+### Delete Emoji API - Method 1: JSON payload
+DELETE http://localhost:5000/api/delete-emoji
+Content-Type: application/json
+
+{
+  "filename":"zongzi.png"
+}
+
+### Delete Index Only API - Method 1: JSON payload (keeps file intact)
+DELETE http://localhost:5000/api/delete-index
+Content-Type: application/json
+
+{
+  "filename":"zongzi_1.png"
+}
+
+### Search emoji to verify database content
+POST http://localhost:5000/api/search-by-filename
+Content-Type: application/json
+
+{
+  "filename": "zongzi",
+  "top_k": 10
+}
+
+

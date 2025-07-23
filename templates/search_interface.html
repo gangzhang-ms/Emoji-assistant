@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help me, Emoji!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .nav-section {
+            padding: 20px 40px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .nav-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .main-content {
+            padding: 40px;
+        }
+        
+        /* Tab styles */
+        .tabs-container {
+            margin-bottom: 30px;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 10px 10px 0 0;
+            border: 2px solid #e9ecef;
+            border-bottom: none;
+            overflow: hidden;
+        }
+        
+        .tab-button {
+            flex: 1;
+            padding: 15px 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .tab-button.active {
+            background: white;
+            color: #4CAF50;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .tab-button:hover {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4CAF50;
+        }
+        
+        .tab-content {
+            display: none;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 0 0 10px 10px;
+            padding: 30px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .search-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .section-title h2 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .section-title p {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.5;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .search-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        .search-button {
+            padding: 15px 30px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+        
+        .search-button:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        
+        .search-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Upload Form Styles */
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .upload-area {
+            position: relative;
+            border: 2px dashed #e0e0e0;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+        
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #4CAF50;
+            background: #f0f8f0;
+        }
+        
+        .file-input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+        }
+        
+        .file-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            pointer-events: none;
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: #4CAF50;
+        }
+        
+        .upload-text {
+            text-align: center;
+        }
+        
+        .upload-subtitle {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .file-preview {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .file-preview img {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .file-info {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Upload Results Styles */
+        .upload-results {
+            background: #f0f8f0;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .upload-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .summary-item {
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .analysis-details {
+            margin: 20px 0;
+        }
+        
+        .upload-tip {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #2196F3;
+            margin-top: 20px;
+            color: #1565C0;
+        }
+        
+        .upload-area.file-selected {
+            border-color: #4CAF50;
+            background: #f0f8f0;
+        }
+        
+        .upload-area.dragover {
+            border-color: #4CAF50;
+            background: #f0f8f0;
+            transform: scale(1.02);
+        }
+        
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        .options-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .option-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .option-group label {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .number-input, .select-input {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4CAF50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .results-section {
+            margin-top: 30px;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .results-count {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .clear-results {
+            padding: 8px 16px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .emoji-card {
+            background: #fafafa;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .emoji-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: #4CAF50;
+        }
+        
+        .emoji-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .emoji-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .emoji-title {
+            flex: 1;
+        }
+        
+        .emoji-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            text-transform: capitalize;
+        }
+        
+        .emoji-score {
+            color: #4CAF50;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .emoji-details {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .detail-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+            min-width: 80px;
+            font-size: 0.9rem;
+        }
+        
+        .detail-value {
+            flex: 1;
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .emotion-tag {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-right: 5px;
+            margin-bottom: 3px;
+        }
+        
+        .primary-emotion {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+        
+        .usage-list {
+            margin: 0;
+            padding-left: 15px;
+        }
+        
+        .usage-list li {
+            margin-bottom: 3px;
+        }
+        
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #f44336;
+            margin: 20px 0;
+        }
+        
+        .analysis-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .analysis-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .options-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Help me, Emoji!</h1>
+            <p>Analyze your text with AI to discover the perfect emojis based on usage scenarios and context</p>
+        </div>
+        
+        <div class="nav-section" style="display: none;">
+            <div class="nav-links">
+                <a href="/upload" class="nav-link">📤 Upload & Analyze</a>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <button class="tab-button active" onclick="switchTab('text-analysis')">
+                        📝 AI Text Analysis & Emoji Search
+                    </button>
+                    <button class="tab-button" onclick="switchTab('upload-analyze')">
+                        📤 Upload & Analyze Emoji
+                    </button>
+                </div>
+                
+                <!-- Text Analysis Tab Content -->
+                <div id="text-analysis" class="tab-content active">
+                    <div class="section-title">
+                        <h2>📝 AI Text Analysis & Emoji Search</h2>
+                        <p>Enter your message or text below, and our AI will analyze it to find the most appropriate emojis based on usage scenarios and context.</p>
+                    </div>
+                    
+                    <!-- Text Analysis Form -->
+                    <form class="search-form" onsubmit="performSearch(event, 'text-analysis')">
+                        <div class="input-group">
+                            <textarea id="text-input" class="search-input" rows="4" 
+                                      placeholder="Enter your message or text to analyze... (e.g., 'Just got promoted and celebrating with the team!', 'Feeling overwhelmed with work today', 'Can't wait for vacation next week!')" 
+                                      required></textarea>
+                            <button type="submit" class="search-button">Analyze & Find Emojis</button>
+                        </div>
+                        <div class="options-row">
+                            <div class="option-group">
+                                <label for="text-count">Results:</label>
+                                <input type="number" id="text-count" class="number-input" min="1" max="20" value="5">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Upload & Analyze Tab Content -->
+                <div id="upload-analyze" class="tab-content">
+                    <div class="section-title">
+                        <h2>📤 Upload & Analyze Emoji</h2>
+                        <p>Upload an emoji image and let our AI analyze its usage scenarios. The results will be automatically added to our searchable database.</p>
+                    </div>
+                    
+                    <form class="upload-form" id="uploadForm" onsubmit="performUpload(event)" enctype="multipart/form-data">
+                        <div class="upload-area" id="uploadArea">
+                            <input type="file" id="fileInput" class="file-input" accept="image/*" required onchange="handleFileSelect(event)">
+                            <label for="fileInput" class="file-label" id="fileLabel">
+                                <div class="upload-icon">📁</div>
+                                <div class="upload-text">
+                                    <strong>Click to select an emoji image or drag & drop</strong><br>
+                                    <span class="upload-subtitle">Supported formats: PNG, JPG, JPEG, GIF, BMP, WEBP (Max 16MB)</span>
+                                </div>
+                            </label>
+                            <div class="file-preview" id="filePreview" style="display: none;"></div>
+                        </div>
+                        <button type="submit" class="search-button" id="uploadButton" disabled>🚀 Upload & Analyze</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <div>Processing request...</div>
+            </div>
+            
+            <div class="results-section" id="results-section" style="display: none;">
+                <div class="results-header">
+                    <h2>Search Results</h2>
+                    <div>
+                        <span class="results-count" id="results-count"></span>
+                        <button class="clear-results" onclick="clearResults()">Clear Results</button>
+                    </div>
+                </div>
+                
+                <div id="analysis-display"></div>
+                <div class="results-grid" id="results-grid"></div>
+            </div>
+            
+            <div class="error-message" id="error-message" style="display: none;"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Tab switching functionality
+        function switchTab(tabId) {
+            // Hide all tab contents
+            const allTabContents = document.querySelectorAll('.tab-content');
+            allTabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            const allTabButtons = document.querySelectorAll('.tab-button');
+            allTabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Clear any existing results when switching tabs
+            clearResults();
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Page initialization code can go here if needed
+        });
+        
+        async function performSearch(event, searchType) {
+            event.preventDefault();
+            
+            clearError();
+            showLoading(true);
+            
+            try {
+                // Handle text analysis
+                const text = document.getElementById('text-input').value.trim();
+                const textCount = parseInt(document.getElementById('text-count').value);
+                const requestData = { text, top_k: textCount };
+                const endpoint = '/api/analyze-text';
+                
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.message || 'Search failed');
+                }
+                
+                displayResults(data, 'text-analysis');
+                
+            } catch (error) {
+                showError('Search failed: ' + error.message);
+                console.error('Search error:', error);
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        function displayResults(data, searchType) {
+            const resultsSection = document.getElementById('results-section');
+            const resultsGrid = document.getElementById('results-grid');
+            const resultsCount = document.getElementById('results-count');
+            const analysisDisplay = document.getElementById('analysis-display');
+            
+            // Clear previous results
+            resultsGrid.innerHTML = '';
+            analysisDisplay.innerHTML = '';
+            
+            // Show analysis for text-analysis
+            if (data.analysis) {
+                displayAnalysis(data.analysis, analysisDisplay);
+            }
+            
+            // Get results array
+            const results = data.emoji_results || data.results || [];
+            
+            // Update results count
+            resultsCount.textContent = `Found ${results.length} matching emoji${results.length !== 1 ? 's' : ''}`;
+            
+            // Display emoji cards
+            results.forEach((emoji, index) => {
+                const card = createEmojiCard(emoji, index);
+                resultsGrid.appendChild(card);
+            });
+            
+            // Show results section
+            resultsSection.style.display = 'block';
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        function displayAnalysis(analysis, container) {
+            const analysisHtml = `
+                <div class="analysis-section">
+                    <div class="analysis-title">
+                        🧠 Usage Scenario Analysis
+                    </div>
+                    <div class="analysis-grid">
+                        ${analysis.usage_scenarios && Array.isArray(analysis.usage_scenarios) && analysis.usage_scenarios.length > 0 ? `
+                        <div class="detail-row">
+                            <div class="detail-label">Usage Scenarios:</div>
+                            <div class="detail-value">
+                                <ul class="usage-list">
+                                    ${analysis.usage_scenarios.map(scenario => `<li>${scenario}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            container.innerHTML = analysisHtml;
+        }
+        
+        function createEmojiCard(emoji, index) {
+            const card = document.createElement('div');
+            card.className = 'emoji-card';
+            card.style.animationDelay = `${index * 0.1}s`;
+            
+            // Use the image_path from the API response, fallback to constructed path
+            const imagePath = emoji.image_path || `/static/downloaded_emojis/${emoji.emoji_name}.png`;
+            
+            card.innerHTML = `
+                <div class="emoji-header">
+                    <img src="${imagePath}" alt="${emoji.emoji_name}" class="emoji-image">
+                    <div class="emoji-title">
+                        <div class="emoji-name">${emoji.emoji_name}</div>
+                        ${emoji.score !== undefined ? `<div class="emoji-score">Relevance: ${(emoji.score * 100).toFixed(1)}%</div>` : ''}
+                        ${emoji.match_type ? `<div class="emoji-score">Match: ${emoji.match_type.replace('_', ' ')}</div>` : ''}
+                    </div>
+                </div>
+                <div class="emoji-details">
+                    ${emoji.usage_scenarios && Array.isArray(emoji.usage_scenarios) && emoji.usage_scenarios.length > 0 ? `
+                    <div class="detail-row">
+                        <div class="detail-label">Usage Scenarios:</div>
+                        <div class="detail-value">
+                            <ul class="usage-list">
+                                ${emoji.usage_scenarios.slice(0, 3).map(scenario => `<li>${scenario}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        function clearResults() {
+            document.getElementById('results-section').style.display = 'none';
+            document.getElementById('results-grid').innerHTML = '';
+            document.getElementById('analysis-display').innerHTML = '';
+            clearError();
+        }
+        
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+            
+            // Disable the search button
+            const searchButton = document.querySelector('.search-button');
+            if (searchButton) {
+                searchButton.disabled = show;
+                searchButton.textContent = show ? 'Analyzing...' : 'Analyze & Find Emojis';
+            }
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            errorDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function clearError() {
+            document.getElementById('error-message').style.display = 'none';
+        }
+        
+        // Upload functionality
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            const uploadButton = document.getElementById('uploadButton');
+            const uploadArea = document.getElementById('uploadArea');
+            const filePreview = document.getElementById('filePreview');
+            
+            if (file) {
+                // Validate file type
+                const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/bmp', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    showError('Invalid file type. Please select an image file (PNG, JPG, JPEG, GIF, BMP, WEBP).');
+                    return;
+                }
+                
+                // Validate file size (16MB)
+                if (file.size > 16 * 1024 * 1024) {
+                    showError('File too large. Please select a file smaller than 16MB.');
+                    return;
+                }
+                
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    filePreview.innerHTML = `
+                        <div class="file-info">
+                            <strong>Selected:</strong> ${file.name} (${(file.size / 1024).toFixed(1)} KB)
+                        </div>
+                        <img src="${e.target.result}" alt="Preview">
+                    `;
+                    filePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+                
+                uploadButton.disabled = false;
+                uploadArea.classList.add('file-selected');
+                clearError();
+            } else {
+                uploadButton.disabled = true;
+                filePreview.style.display = 'none';
+                uploadArea.classList.remove('file-selected');
+            }
+        }
+        
+        async function performUpload(event) {
+            event.preventDefault();
+            
+            const fileInput = document.getElementById('fileInput');
+            const uploadButton = document.getElementById('uploadButton');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showError('Please select a file first.');
+                return;
+            }
+            
+            // Show loading state
+            uploadButton.disabled = true;
+            uploadButton.textContent = '🔄 Analyzing...';
+            showLoading(true);
+            clearError();
+            
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                const response = await fetch('/api/upload-analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Show success message and analysis results
+                    showUploadResults(data);
+                    
+                    // Reset form
+                    fileInput.value = '';
+                    document.getElementById('filePreview').style.display = 'none';
+                    document.getElementById('uploadArea').classList.remove('file-selected');
+                    
+                    // Show a success notification
+                    showSuccessNotification('Image uploaded and analyzed successfully! Results added to database.');
+                } else {
+                    showError(data.message || 'Upload failed. Please try again.');
+                }
+                
+            } catch (error) {
+                showError('Network error: ' + error.message);
+            } finally {
+                uploadButton.disabled = false;
+                uploadButton.textContent = '🚀 Upload & Analyze';
+                showLoading(false);
+            }
+        }
+        
+        function showUploadResults(data) {
+            const resultsSection = document.getElementById('results-section');
+            const resultsGrid = document.getElementById('results-grid');
+            const resultsCount = document.getElementById('results-count');
+            const analysisDisplay = document.getElementById('analysis-display');
+            
+            // Show upload analysis
+            const analysis = data.analysis || {};
+            const uploadResultsHtml = `
+                <div class="upload-results">
+                    <h3>🎯 Upload Analysis Results</h3>
+                    <div class="upload-summary">
+                        <div class="summary-item">
+                            <strong>📁 Filename:</strong> ${data.filename || 'N/A'}
+                        </div>
+                        <div class="summary-item">
+                            <strong>🏷️ Emoji Name:</strong> ${data.emoji_name || 'N/A'}
+                        </div>
+                        <div class="summary-item">
+                            <strong>💾 Stored in Database:</strong> ${data.stored_in_database ? '✅ Yes' : '❌ No'}
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-details">
+                        <h4>😊 Emotion Analysis</h4>
+                        <div class="detail-row">
+                            <strong>Primary Emotion:</strong> <span class="emotion-tag primary-emotion">${analysis.primary_emotion || 'N/A'}</span>
+                        </div>
+                        ${analysis.secondary_emotions && analysis.secondary_emotions.length > 0 ? `
+                        <div class="detail-row">
+                            <strong>Secondary Emotions:</strong> ${analysis.secondary_emotions.map(emotion => `<span class="emotion-tag">${emotion}</span>`).join('')}
+                        </div>
+                        ` : ''}
+                        <div class="detail-row">
+                            <strong>Tone:</strong> ${analysis.tone || 'N/A'}
+                        </div>
+                        
+                        ${analysis.usage_scenarios && analysis.usage_scenarios.length > 0 ? `
+                        <div class="detail-row">
+                            <strong>Usage Scenarios:</strong>
+                            <ul class="usage-list">
+                                ${analysis.usage_scenarios.map(scenario => `<li>${scenario}</li>`).join('')}
+                            </ul>
+                        </div>
+                        ` : ''}
+                        
+                        ${analysis.context_suggestions && analysis.context_suggestions.length > 0 ? `
+                        <div class="detail-row">
+                            <strong>Context Suggestions:</strong>
+                            <ul class="usage-list">
+                                ${analysis.context_suggestions.map(context => `<li>${context}</li>`).join('')}
+                            </ul>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="upload-tip">
+                        <strong>💡 Tip:</strong> Your emoji is now searchable! Try searching for "${analysis.primary_emotion}" or "${analysis.tone}" to find it and similar emojis.
+                    </div>
+                </div>
+            `;
+            
+            analysisDisplay.innerHTML = uploadResultsHtml;
+            resultsGrid.innerHTML = '';
+            resultsCount.textContent = 'Upload completed successfully';
+            resultsSection.style.display = 'block';
+            
+            // Scroll to results
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function showSuccessNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'success-notification';
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #4CAF50;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 5px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                z-index: 1000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-in forwards';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 5000);
+        }
+        
+        // Add drag and drop functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            
+            if (uploadArea && fileInput) {
+                // Drag and drop handlers
+                uploadArea.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    uploadArea.classList.add('dragover');
+                });
+                
+                uploadArea.addEventListener('dragleave', function(e) {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                });
+                
+                uploadArea.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                    
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        const file = files[0];
+                        if (file.type.startsWith('image/')) {
+                            fileInput.files = e.dataTransfer.files;
+                            handleFileSelect({ target: { files: [file] } });
+                        } else {
+                            showError('Please drop an image file.');
+                        }
+                    }
+                });
+            }
+        });
+        
+        // Add some keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            // Ctrl/Cmd + Enter to submit the form
+            if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+                const form = document.querySelector('.search-form');
+                if (form) {
+                    form.dispatchEvent(new Event('submit'));
+                }
+            }
+            
+            // Escape to clear results
+            if (event.key === 'Escape') {
+                clearResults();
+            }
+        });
+    </script>
+</body>
+</html>

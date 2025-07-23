@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emoji Search API Documentation</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        .nav-links { margin-bottom: 30px; text-align: center; }
+        .nav-links a { 
+            display: inline-block; 
+            padding: 10px 20px; 
+            margin: 0 10px; 
+            background: #4CAF50; 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 5px; 
+            transition: background 0.3s; 
+        }
+        .nav-links a:hover { background: #45a049; }
+        .endpoint { background: #f4f4f4; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .method { color: #007bff; font-weight: bold; }
+        .path { color: #28a745; font-weight: bold; }
+        .example { background: #e9ecef; padding: 10px; border-radius: 3px; margin: 10px 0; }
+        .response { background: #d4edda; padding: 10px; border-radius: 3px; margin: 10px 0; }
+        code { background: #f8f9fa; padding: 2px 4px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="nav-links">
+        <a href="/search">📝 AI Text Analysis Interface</a>
+        <a href="/upload">📤 Upload & Analyze Interface</a>
+        <a href="/api/health">🔍 Health Check</a>
+    </div>
+    
+    <h1>📝 AI Text Analysis & Emoji Search API</h1>
+    <p>RESTful API for text analysis and emoji recommendations using AI.</p>
+    
+    <h2>Endpoints</h2>
+    
+    <div class="endpoint">
+        <h3><span class="method">GET</span> <span class="path">/api/health</span></h3>
+        <p>Health check endpoint to verify API status.</p>
+        <div class="example">
+            <strong>Example:</strong><br>
+            <code>curl http://localhost:5000/api/health</code>
+        </div>
+        <div class="response">
+            <strong>Response:</strong><br>
+            <code>{"status": "healthy", "timestamp": "2024-01-01T00:00:00Z"}</code>
+        </div>
+    </div>
+    
+    <div class="endpoint">
+        <h3><span class="method">POST</span> <span class="path">/api/search</span></h3>
+        <p>Search for emojis using natural language vector similarity.</p>
+        <div class="example">
+            <strong>Request Body:</strong><br>
+            <code>{"query": "happy celebration", "top_k": 5}</code>
+        </div>
+        <div class="response">
+            <strong>Response:</strong><br>
+            <code>{"results": [...], "query": "happy celebration", "count": 5}</code>
+        </div>
+    </div>
+    
+    <div class="endpoint">
+        <h3><span class="method">POST</span> <span class="path">/api/search/emotion</span></h3>
+        <p>Search for emojis by primary emotion.</p>
+        <div class="example">
+            <strong>Request Body:</strong><br>
+            <code>{"emotion": "joy", "top_k": 10}</code>
+        </div>
+        <div class="response">
+            <strong>Response:</strong><br>
+            <code>{"results": [...], "emotion": "joy", "count": 10}</code>
+        </div>
+    </div>
+    
+    <div class="endpoint">
+        <h3><span class="method">POST</span> <span class="path">/api/analyze-text</span></h3>
+        <p>Analyze text using LLM to extract emotions and context, then search for matching emojis.</p>
+        <div class="example">
+            <strong>Request Body:</strong><br>
+            <code>{"text": "I just got promoted and I'm celebrating with my team!", "top_k": 5}</code>
+        </div>
+        <div class="response">
+            <strong>Response:</strong><br>
+            <code>{"analysis": {...}, "emoji_results": [...], "text": "...", "count": 5}</code>
+        </div>
+    </div>
+    
+    <div class="endpoint">
+        <h3><span class="method">GET</span> <span class="path">/api/stats</span></h3>
+        <p>Get statistics about the emoji database.</p>
+        <div class="example">
+            <strong>Example:</strong><br>
+            <code>curl http://localhost:5000/api/stats</code>
+        </div>
+        <div class="response">
+            <strong>Response:</strong><br>
+            <code>{"total_count": 150}</code>
+        </div>
+    </div>
+    
+    <div class="endpoint">
+        <h3><span class="method">POST</span> <span class="path">/api/search/name</span></h3>
+        <p>Search for a specific emoji by name and return its details.</p>
+        <div class="example">
+            <strong>Request Body:</strong><br>
+            <code>{"emoji_name": "happy"}</code>
+        </div>
+        <div class="response">
+            <strong>Response:</strong><br>
+            <code>{"results": [...], "emoji_name": "happy", "count": 1, "match_type": "exact"}</code>
+        </div>
+    </div>
+    
+    <div class="endpoint">
+        <h3><span class="method">POST</span> <span class="path">/api/upload-analyze</span></h3>
+        <p>Upload an image file, analyze it using Azure OpenAI Vision, and store the results in the vector database.</p>
+        <div class="example">
+            <strong>Request:</strong> Multipart form data with file field<br>
+            <code>curl -X POST -F "file=@emoji.png" http://localhost:5000/api/upload-analyze</code>
+        </div>
+        <div class="response">
+            <strong>Response:</strong><br>
+            <code>{"success": true, "filename": "...", "emoji_name": "...", "analysis": {...}, "stored_in_database": true}</code>
+        </div>
+        <p><strong>Supported formats:</strong> PNG, JPG, JPEG, GIF, BMP, WEBP (max 16MB)</p>
+        <p><strong>Features:</strong> Uses Azure OpenAI Vision to analyze uploaded images and automatically stores results in vector database for future searches. All uploaded images are automatically converted to PNG format for consistency.</p>
+    </div>
+    
+    <div class="endpoint">
+        <h3><span class="method">DELETE</span> <span class="path">/api/delete-emoji</span></h3>
+        <p>Delete an emoji by filename from both filesystem and vector database.</p>
+        <div class="example">
+            <strong>Request Body:</strong><br>
+            <code>{"filename": "happy_face.png"}</code>
+        </div>
+        <div class="response">
+            <strong>Response:</strong><br>
+            <code>{"success": true, "filename": "happy_face.png", "file_deleted": true, "database_deleted": true, "message": "Emoji file and database entry deleted successfully"}</code>
+        </div>
+        <p><strong>Alternative URL format:</strong> <code>DELETE /api/delete-emoji/happy_face.png</code></p>
+        <p><strong>Features:</strong> Removes emoji image from downloaded_emojis folder and deletes corresponding entry from vector database index.</p>
+    </div>
+    
+    <div class="endpoint">
+        <h3><span class="method">DELETE</span> <span class="path">/api/delete-index</span></h3>
+        <p>Delete an emoji index from vector database only (keeps file intact on filesystem).</p>
+        <div class="example">
+            <strong>Request Body:</strong><br>
+            <code>{"filename": "happy_face.png"}</code>
+        </div>
+        <div class="response">
+            <strong>Response:</strong><br>
+            <code>{"success": true, "filename": "happy_face.png", "file_exists": true, "file_kept_intact": true, "database_deleted": true, "message": "Index deleted successfully. File 'happy_face.png' kept intact."}</code>
+        </div>
+        <p><strong>Alternative URL format:</strong> <code>DELETE /api/delete-index/happy_face.png</code></p>
+        <p><strong>Features:</strong> Only removes the entry from vector database index while preserving the original image file. Useful for re-indexing or cleaning up database entries without losing image files.</p>
+    </div>
+    
+    <h2>Error Responses</h2>
+    <p>All endpoints return appropriate HTTP status codes:</p>
+    <ul>
+        <li><code>200</code> - Success</li>
+        <li><code>400</code> - Bad Request (invalid parameters)</li>
+        <li><code>500</code> - Internal Server Error</li>
+        <li><code>503</code> - Service Unavailable (database not initialized)</li>
+    </ul>
+    
+    <h2>Rate Limiting</h2>
+    <p>The API implements basic rate limiting to prevent abuse. Heavy usage may result in temporary throttling.</p>
+    
+    <h2>CORS</h2>
+    <p>Cross-Origin Resource Sharing (CORS) is enabled for all routes to support web applications.</p>
+</body>
+</html>

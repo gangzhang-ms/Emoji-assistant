@@ -1,0 +1,19 @@
+# Configuration Files
+
+# API Key Storage
+config.json
+azure_config.json
+
+# Environment files
+.env
+*.env
+
+# API Key text files
+api_key.txt
+openai_key.txt
+*.key
+
+# Backup config files
+azure_config.*.json
+
+__pycache__/*
