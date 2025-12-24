@@ -319,16 +319,14 @@ class EmojiVectorStorage:
             usage_scenarios_str = self.convert_to_string(usage_scenarios_raw, self.logger, emoji_key)
             context_suggestions_str = self.convert_to_string(context_suggestions_raw, self.logger, emoji_key)
             
-            # Use only context_suggestions for the content vector
-            # This focuses the embedding on the practical use cases of the emoji
-            searchable_text = ':'.join([
-                emoji_name,
+            # Use primary_emotion, secondary_emotions, usage_scenarios and context_suggestions for the content vector
+            # This focuses the embedding on emotional context and practical use cases
+            searchable_text = ' '.join([
                 primary_emotion,
                 secondary_emotions_str,
-                tone,
                 usage_scenarios_str,
                 context_suggestions_str
-            ])
+            ]).strip()
             
             # Ensure we have some text for embedding - use emoji name as fallback
             if not searchable_text or len(searchable_text.strip()) == 0:

@@ -115,6 +115,16 @@ class AzureEmojiAnalyzer:
             )
             
             content = response.choices[0].message.content.strip()
+            
+            # Clean up any markdown formatting that might be present
+            if content.startswith('```json'):
+                content = content[7:]
+            if content.startswith('```'):
+                content = content[3:]
+            if content.endswith('```'):
+                content = content[:-3]
+            content = content.strip()
+            
             return json.loads(content)
             
         except FileNotFoundError:
@@ -122,6 +132,7 @@ class AzureEmojiAnalyzer:
             return None
         except json.JSONDecodeError as e:
             print(f"  ❌ JSON parsing error: {e}")
+            print(f"  📄 Raw response: {content[:500]}")  # Print first 500 chars of response
             return None
         except Exception as e:
             print(f"  ❌ Azure OpenAI Vision API error: {e}")

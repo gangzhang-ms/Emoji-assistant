@@ -521,14 +521,11 @@ def store_analysis_in_vector_db(emoji_key: str, analysis_data: Dict, storage_ins
         from emoji_vector_storage import EmojiDocument
         
         # Convert analysis data to searchable text
-        searchable_text_parts = [
-            analysis_data.get('primary_emotion', ''),
-            ' '.join(analysis_data.get('secondary_emotions', [])),
-            ' '.join(analysis_data.get('usage_scenarios', [])),
-            analysis_data.get('tone', ''),
-            ' '.join(analysis_data.get('context_suggestions', []))
-        ]
-        searchable_text = ' '.join(part for part in searchable_text_parts if part).strip()
+        # Using usage_scenarios and context_suggestions for vector search
+        searchable_text = ' '.join(
+            analysis_data.get('usage_scenarios', []) + 
+            analysis_data.get('context_suggestions', [])
+        ).strip()
         
         # Generate embedding for the searchable text
         embedding = storage_instance.storage.generate_embedding(searchable_text)
@@ -741,6 +738,18 @@ def search_interface():
 def upload_interface():
     """Interactive web upload interface"""
     return render_template('upload_interface.html')
+
+
+@app.route('/chat')
+def chat_interface():
+    """Interactive chat interface with emoji recommendations"""
+    return render_template('chat_interface.html')
+
+
+@app.route('/chat-two-users')
+def chat_two_users():
+    """Two-user split-screen chat interface"""
+    return render_template('chat_two_users.html')
 
 
 @app.route('/static/downloaded_emojis/<filename>')

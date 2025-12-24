@@ -68,7 +68,7 @@ DELETE http://localhost:5000/api/delete-emoji
 Content-Type: application/json
 
 {
-  "filename":"zongzi.png"
+  "filename":"hongbao.png"
 }
 
 ### Delete Index Only API - Method 1: JSON payload (keeps file intact)
@@ -84,7 +84,7 @@ POST http://localhost:5000/api/search-by-filename
 Content-Type: application/json
 
 {
-  "filename": "zongzi",
+  "filename": "moon",
   "top_k": 10
 }
 
